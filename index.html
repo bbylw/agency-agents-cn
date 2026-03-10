@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Agency — AI 专家团队</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['"Space Grotesk"', '"Noto Sans SC"', 'sans-serif'],
+            body: ['"Noto Sans SC"', '"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            surface: {
+              50: '#f8fafc',
+              100: '#f1f5f9',
+              200: '#e2e8f0',
+              700: '#1e293b',
+              800: '#0f172a',
+              900: '#020617',
+              950: '#010312',
+            },
+            accent: {
+              DEFAULT: '#6366f1',
+              light: '#818cf8',
+              dim: '#4f46e5',
+            },
+            glow: {
+              cyan: '#22d3ee',
+              violet: '#a78bfa',
+              rose: '#fb7185',
+              amber: '#fbbf24',
+              emerald: '#34d399',
+              sky: '#38bdf8',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Space Grotesk', sans-serif;
+      background: #020617;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background */
+    .hero-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.12) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(34,211,238,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(167,139,250,0.06) 0%, transparent 50%);
+    }
+
+    .grain {
+      position: fixed;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+      opacity: 0.03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    .glass {
+      background: rgba(15, 23, 42, 0.5);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(99, 102, 241, 0.1);
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.4);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(226, 232, 240, 0.06);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
+      background: rgba(15, 23, 42, 0.6);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(99, 102, 241, 0.08);
+    }
+
+    .dept-card {
+      background: rgba(15, 23, 42, 0.35);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(226, 232, 240, 0.05);
+      transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .dept-card:hover {
+      border-color: var(--dept-color, rgba(99, 102, 241, 0.3));
+      box-shadow: 0 0 40px var(--dept-glow, rgba(99, 102, 241, 0.06));
+    }
+
+    .tag {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 4px;
+      background: rgba(99, 102, 241, 0.12);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.15);
+      white-space: nowrap;
+    }
+
+    .line-glow {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(99,102,241,0.4), transparent);
+    }
+
+    @keyframes fade-up {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .animate-fade-up {
+      animation: fade-up 0.7s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      opacity: 0;
+    }
+    .delay-1 { animation-delay: 0.1s; }
+    .delay-2 { animation-delay: 0.2s; }
+    .delay-3 { animation-delay: 0.3s; }
+    .delay-4 { animation-delay: 0.4s; }
+    .delay-5 { animation-delay: 0.5s; }
+
+    .nav-link {
+      position: relative;
+      color: #94a3b8;
+      transition: color 0.2s;
+    }
+    .nav-link:hover { color: #e2e8f0; }
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: #6366f1;
+      transition: width 0.3s;
+    }
+    .nav-link:hover::after { width: 100%; }
+
+    .scenario-step {
+      position: relative;
+      padding-left: 2rem;
+    }
+    .scenario-step::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0.7rem;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      border: 2px solid #6366f1;
+      background: #020617;
+    }
+    .scenario-step::after {
+      content: '';
+      position: absolute;
+      left: 3px;
+      top: 1.5rem;
+      width: 1px;
+      height: calc(100% - 0.5rem);
+      background: rgba(99, 102, 241, 0.2);
+    }
+    .scenario-step:last-child::after { display: none; }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #020617; }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
+
+    .filter-btn {
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      border: 1px solid rgba(226, 232, 240, 0.08);
+      background: transparent;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: rgba(99, 102, 241, 0.3);
+      color: #c7d2fe;
+    }
+  </style>
+</head>
+<body>
+  <div class="hero-bg"></div>
+  <div class="grain"></div>
+
+  <!-- Navigation -->
+  <nav class="fixed top-0 inset-x-0 z-50 glass">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <a href="#" class="flex items-center gap-2.5 group">
+        <span class="text-2xl">🎭</span>
+        <span class="font-display font-bold text-lg tracking-tight text-white">The Agency</span>
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-body">
+        <a href="#agents" class="nav-link">代理名册</a>
+        <a href="#usecases" class="nav-link">使用场景</a>
+        <a href="#quickstart" class="nav-link">快速开始</a>
+        <a href="#integrations" class="nav-link">工具集成</a>
+        <a href="https://github.com/msitarzewski/agency-agents" target="_blank" rel="noopener"
+           class="flex items-center gap-1.5 px-4 py-1.5 rounded-lg border border-accent/30 text-accent-light hover:bg-accent/10 transition-all text-sm">
+          <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+          GitHub
+        </a>
+      </div>
+      <!-- Mobile menu button -->
+      <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="md:hidden p-2 text-slate-400 hover:text-white">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+    </div>
+    <!-- Mobile menu -->
+    <div id="mobileMenu" class="hidden md:hidden border-t border-white/5 px-4 py-4 space-y-3 text-sm">
+      <a href="#agents" class="block text-slate-400 hover:text-white py-1">代理名册</a>
+      <a href="#usecases" class="block text-slate-400 hover:text-white py-1">使用场景</a>
+      <a href="#quickstart" class="block text-slate-400 hover:text-white py-1">快速开始</a>
+      <a href="#integrations" class="block text-slate-400 hover:text-white py-1">工具集成</a>
+    </div>
+  </nav>
+
+  <main class="relative z-10">
+
+    <!-- Hero -->
+    <section class="min-h-[90vh] flex items-center justify-center pt-16">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+        <div class="animate-fade-up">
+          <p class="inline-flex items-center gap-2 text-xs font-mono tracking-widest uppercase text-accent-light mb-6 px-3 py-1.5 rounded-full border border-accent/20 bg-accent/5">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+            开源 · MIT 许可
+          </p>
+        </div>
+        <h1 class="font-display font-bold text-4xl sm:text-5xl md:text-7xl leading-[1.1] tracking-tight text-white mb-6 animate-fade-up delay-1">
+          准备好改变您工作流程的<br>
+          <span class="bg-gradient-to-r from-accent-light via-glow-cyan to-glow-violet bg-clip-text text-transparent">AI 专家团队</span>
+        </h1>
+        <p class="text-lg sm:text-xl text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up delay-2">
+          从前端开发专家到 Reddit 社区达人，从趣味元素注入者到现实检验者。<br class="hidden sm:block">每个代理都是具有个性、流程和可靠交付成果的专业专家。
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4 animate-fade-up delay-3">
+          <a href="#agents" class="px-6 py-3 rounded-lg bg-accent hover:bg-accent-dim text-white font-medium transition-all shadow-lg shadow-accent/20 hover:shadow-accent/30">
+            浏览全部代理 →
+          </a>
+          <a href="#quickstart" class="px-6 py-3 rounded-lg border border-white/10 hover:border-accent/30 text-slate-300 hover:text-white transition-all">
+            快速开始
+          </a>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-16 animate-fade-up delay-4">
+          <div class="glass-card rounded-xl p-4">
+            <p class="font-display font-bold text-2xl text-white">61+</p>
+            <p class="text-xs text-slate-500 mt-1">专业代理</p>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <p class="font-display font-bold text-2xl text-white">8</p>
+            <p class="text-xs text-slate-500 mt-1">专业部门</p>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <p class="font-display font-bold text-2xl text-white">7</p>
+            <p class="text-xs text-slate-500 mt-1">工具集成</p>
+          </div>
+          <div class="glass-card rounded-xl p-4">
+            <p class="font-display font-bold text-2xl text-white">MIT</p>
+            <p class="text-xs text-slate-500 mt-1">开源许可</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line-glow max-w-5xl mx-auto my-4"></div>
+
+    <!-- Agents Roster -->
+    <section id="agents" class="py-20 sm:py-28">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+          <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-3">代理名册</h2>
+          <p class="text-slate-400 max-w-xl mx-auto">精心打造的 AI 代理角色集合，每个代理都具有深厚专业知识、独特个性和可靠交付能力</p>
+        </div>
+
+        <!-- Department filter -->
+        <div class="flex flex-wrap justify-center gap-2 mb-12" id="deptFilter">
+          <button class="filter-btn active" data-dept="all">全部</button>
+          <button class="filter-btn" data-dept="engineering">💻 工程</button>
+          <button class="filter-btn" data-dept="design">🎨 设计</button>
+          <button class="filter-btn" data-dept="marketing">📢 营销</button>
+          <button class="filter-btn" data-dept="product">📊 产品</button>
+          <button class="filter-btn" data-dept="pm">🎬 项目管理</button>
+          <button class="filter-btn" data-dept="testing">🧪 测试</button>
+          <button class="filter-btn" data-dept="support">🛟 支持</button>
+          <button class="filter-btn" data-dept="spatial">🥽 空间计算</button>
+          <button class="filter-btn" data-dept="specialized">🎯 专业</button>
+        </div>
+
+        <!-- Department: Engineering -->
+        <div class="mb-16 dept-section" data-dept="engineering">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">💻</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">工程部门</h3>
+              <p class="text-xs text-slate-500">一次提交构建未来</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-frontend-developer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🎨</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">前端开发者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">React/Vue/Angular, UI 实现, 性能优化</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">React</span><span class="tag">Vue</span><span class="tag">Web Vitals</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-backend-architect.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🏗️</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">后端架构师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">API 设计，数据库架构，可扩展性</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">API</span><span class="tag">微服务</span><span class="tag">云</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-mobile-app-builder.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📱</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">移动应用构建者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">iOS/Android, React Native, Flutter</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">iOS</span><span class="tag">Android</span><span class="tag">Flutter</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-ai-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🤖</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">AI 工程师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">ML 模型，部署，AI 集成</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">ML</span><span class="tag">数据管道</span><span class="tag">AI</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-devops-automator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🚀</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">DevOps 自动化工程师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">CI/CD，基础设施自动化，云运维</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">CI/CD</span><span class="tag">自动化</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-rapid-prototyper.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">⚡</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">快速原型开发者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">快速 POC 开发, MVP 构建</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">MVP</span><span class="tag">POC</span><span class="tag">快速迭代</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-senior-developer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">💎</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">高级开发者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">Laravel/Livewire，高级模式</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">Laravel</span><span class="tag">架构</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/engineering/engineering-security-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(56,189,248,0.3);--dept-glow:rgba(56,189,248,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🔒</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">安全工程师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">威胁建模，安全代码审查，安全架构</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">安全</span><span class="tag">审计</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Design -->
+        <div class="mb-16 dept-section" data-dept="design">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🎨</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">设计部门</h3>
+              <p class="text-xs text-slate-500">让产品美观、易用且令人愉悦</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-ui-designer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🎯</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">UI 设计师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">视觉设计，组件库，设计系统</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">UI</span><span class="tag">设计系统</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-ux-researcher.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🔍</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">UX 研究员</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">用户测试，行为分析，研究</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">用户研究</span><span class="tag">可用性</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-ux-architect.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🏛️</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">UX 架构师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">技术架构，CSS 系统，实现</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">CSS</span><span class="tag">架构</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-brand-guardian.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🎭</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">品牌守护者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">品牌识别，一致性，定位</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">品牌</span><span class="tag">识别</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-visual-storyteller.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📖</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">视觉叙事者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">视觉叙事，多媒体内容</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">多媒体</span><span class="tag">叙事</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-whimsy-injector.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">✨</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">趣味元素注入者</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">个性，愉悦，趣味交互</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">微交互</span><span class="tag">彩蛋</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/design/design-image-prompt-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📷</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">图像提示工程师</p>
+                  <p class="text-xs text-slate-500 mt-1 leading-relaxed">AI 图像生成提示，摄影</p>
+                  <div class="flex flex-wrap gap-1.5 mt-2.5">
+                    <span class="tag">Midjourney</span><span class="tag">DALL-E</span>
+                  </div>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Marketing -->
+        <div class="mb-16 dept-section" data-dept="marketing">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">📢</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">营销部门</h3>
+              <p class="text-xs text-slate-500">一次真实的互动增长您的受众</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-growth-hacker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🚀</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">增长黑客</p>
+                  <p class="text-xs text-slate-500 mt-1">快速用户获取，病毒式传播循环</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-content-creator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📝</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">内容创作者</p>
+                  <p class="text-xs text-slate-500 mt-1">多平台内容，编辑日历</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-twitter-engager.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🐦</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">Twitter 互动者</p>
+                  <p class="text-xs text-slate-500 mt-1">实时互动，思想领导力</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-tiktok-strategist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📱</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">TikTok 战略家</p>
+                  <p class="text-xs text-slate-500 mt-1">病毒式内容，算法优化</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-instagram-curator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📸</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">Instagram 策展人</p>
+                  <p class="text-xs text-slate-500 mt-1">视觉叙事，社区建设</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-reddit-community-builder.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🤝</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">Reddit 社区建设者</p>
+                  <p class="text-xs text-slate-500 mt-1">真实互动，价值驱动内容</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-app-store-optimizer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📱</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">应用商店优化师</p>
+                  <p class="text-xs text-slate-500 mt-1">ASO，转化优化，可发现性</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-social-media-strategist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🌐</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">社交媒体战略家</p>
+                  <p class="text-xs text-slate-500 mt-1">跨平台战略，活动</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-xiaohongshu-specialist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">📕</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">小红书专家</p>
+                  <p class="text-xs text-slate-500 mt-1">生活方式内容，趋势驱动战略</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-wechat-official-account.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">💬</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">微信公众号管理员</p>
+                  <p class="text-xs text-slate-500 mt-1">订阅者互动，内容营销</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/marketing/marketing-zhihu-strategist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(52,211,153,0.3);--dept-glow:rgba(52,211,153,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🧠</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">知乎战略家</p>
+                  <p class="text-xs text-slate-500 mt-1">思想领导力，知识驱动互动</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Product -->
+        <div class="mb-16 dept-section" data-dept="product">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">📊</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">产品部门</h3>
+              <p class="text-xs text-slate-500">在正确的时间构建正确的东西</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/product/product-sprint-prioritizer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🎯</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">Sprint 优先级排序者</p>
+                  <p class="text-xs text-slate-500 mt-1">敏捷规划，功能优先级</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/product/product-trend-researcher.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">🔍</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">趋势研究员</p>
+                  <p class="text-xs text-slate-500 mt-1">市场情报，竞争分析</p>
+                </div>
+              </div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/product/product-feedback-synthesizer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3">
+                <span class="text-xl mt-0.5">💬</span>
+                <div class="min-w-0">
+                  <p class="font-display font-medium text-sm text-white">反馈综合者</p>
+                  <p class="text-xs text-slate-500 mt-1">用户反馈分析，洞察提取</p>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Project Management -->
+        <div class="mb-16 dept-section" data-dept="pm">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🎬</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">项目管理部门</h3>
+              <p class="text-xs text-slate-500">让列车准时且在预算内运行</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/project-management/project-management-studio-producer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(167,139,250,0.3);--dept-glow:rgba(167,139,250,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🎬</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">工作室制作人</p><p class="text-xs text-slate-500 mt-1">高层协调，组合管理</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/project-management/project-management-project-shepherd.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(167,139,250,0.3);--dept-glow:rgba(167,139,250,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🐑</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">项目牧羊人</p><p class="text-xs text-slate-500 mt-1">跨职能协调，时间线管理</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/project-management/project-management-studio-operations.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(167,139,250,0.3);--dept-glow:rgba(167,139,250,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">⚙️</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">工作室运营</p><p class="text-xs text-slate-500 mt-1">日常效率，流程优化</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/project-management/project-management-experiment-tracker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(167,139,250,0.3);--dept-glow:rgba(167,139,250,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🧪</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">实验跟踪者</p><p class="text-xs text-slate-500 mt-1">A/B 测试，假设验证</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/project-management/project-manager-senior.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(167,139,250,0.3);--dept-glow:rgba(167,139,250,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">👔</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">高级项目经理</p><p class="text-xs text-slate-500 mt-1">现实范围界定，任务转换</p></div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Testing -->
+        <div class="mb-16 dept-section" data-dept="testing">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🧪</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">测试部门</h3>
+              <p class="text-xs text-slate-500">破坏产品，让用户不必经历</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-evidence-collector.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">📸</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">证据收集者</p><p class="text-xs text-slate-500 mt-1">基于截图的 QA，视觉证明</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-reality-checker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔍</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">现实检验者</p><p class="text-xs text-slate-500 mt-1">基于证据的认证，质量门</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-test-results-analyzer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">📊</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">测试结果分析者</p><p class="text-xs text-slate-500 mt-1">测试评估，指标分析</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-performance-benchmarker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">⚡</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">性能基准测试者</p><p class="text-xs text-slate-500 mt-1">性能测试，优化</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-api-tester.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔌</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">API 测试者</p><p class="text-xs text-slate-500 mt-1">API 验证，集成测试</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-tool-evaluator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🛠️</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">工具评估者</p><p class="text-xs text-slate-500 mt-1">技术评估，工具选择</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-workflow-optimizer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔄</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">工作流优化者</p><p class="text-xs text-slate-500 mt-1">流程分析，工作流改进</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/testing/testing-accessibility-auditor.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(34,211,238,0.3);--dept-glow:rgba(34,211,238,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">♿</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">可访问性审计员</p><p class="text-xs text-slate-500 mt-1">WCAG 审计，辅助技术测试</p></div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Support -->
+        <div class="mb-16 dept-section" data-dept="support">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🛟</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">支持部门</h3>
+              <p class="text-xs text-slate-500">运营的中坚力量</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-support-responder.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">💬</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">支持响应者</p><p class="text-xs text-slate-500 mt-1">客户服务，问题解决</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-analytics-reporter.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">📊</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">分析报告者</p><p class="text-xs text-slate-500 mt-1">数据分析，仪表板，洞察</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-finance-tracker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">💰</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">财务跟踪者</p><p class="text-xs text-slate-500 mt-1">财务规划，预算管理</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-infrastructure-maintainer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🏗️</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">基础设施维护者</p><p class="text-xs text-slate-500 mt-1">系统可靠性，性能优化</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-legal-compliance-checker.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">⚖️</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">法律合规检查者</p><p class="text-xs text-slate-500 mt-1">合规，法规，法律审查</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/support/support-executive-summary-generator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,191,36,0.3);--dept-glow:rgba(251,191,36,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">📑</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">执行摘要生成器</p><p class="text-xs text-slate-500 mt-1">C 级沟通，战略摘要</p></div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Spatial Computing -->
+        <div class="mb-16 dept-section" data-dept="spatial">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🥽</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">空间计算部门</h3>
+              <p class="text-xs text-slate-500">构建沉浸式未来</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/xr-interface-architect.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🏗️</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">XR 界面架构师</p><p class="text-xs text-slate-500 mt-1">空间交互设计，沉浸式 UX</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/macos-spatial-metal-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">💻</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">macOS 空间/Metal 工程师</p><p class="text-xs text-slate-500 mt-1">Swift, Metal, 高性能 3D</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/xr-immersive-developer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🌐</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">XR 沉浸式开发者</p><p class="text-xs text-slate-500 mt-1">WebXR，基于浏览器的 AR/VR</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/xr-cockpit-interaction-specialist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🎮</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">XR 驾驶舱交互专家</p><p class="text-xs text-slate-500 mt-1">基于驾驶舱的控制，沉浸式系统</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/visionos-spatial-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🍎</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">visionOS 空间工程师</p><p class="text-xs text-slate-500 mt-1">Apple Vision Pro 开发</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/spatial-computing/terminal-integration-specialist.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(99,102,241,0.3);--dept-glow:rgba(99,102,241,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔌</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">终端集成专家</p><p class="text-xs text-slate-500 mt-1">终端集成，命令行工具</p></div></div>
+            </a>
+          </div>
+        </div>
+
+        <!-- Department: Specialized -->
+        <div class="mb-16 dept-section" data-dept="specialized">
+          <div class="flex items-center gap-3 mb-6">
+            <span class="text-2xl">🎯</span>
+            <div>
+              <h3 class="font-display font-semibold text-xl text-white">专业部门</h3>
+              <p class="text-xs text-slate-500">无法归类的独特专家</p>
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/specialized/agents-orchestrator.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🎭</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">代理编排者</p><p class="text-xs text-slate-500 mt-1">多代理协调，工作流管理</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/specialized/data-analytics-reporter.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">📊</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">数据分析报告者</p><p class="text-xs text-slate-500 mt-1">商业智能，数据洞察</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/specialized/lsp-index-engineer.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔍</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">LSP/索引工程师</p><p class="text-xs text-slate-500 mt-1">语言服务器协议，代码智能</p></div></div>
+            </a>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/specialized/agentic-identity-trust.md" target="_blank" class="dept-card rounded-xl p-4 block" style="--dept-color:rgba(251,113,133,0.3);--dept-glow:rgba(251,113,133,0.06)">
+              <div class="flex items-start gap-3"><span class="text-xl mt-0.5">🔐</span><div class="min-w-0"><p class="font-display font-medium text-sm text-white">代理身份与信任架构师</p><p class="text-xs text-slate-500 mt-1">代理身份，认证，信任验证</p></div></div>
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="line-glow max-w-5xl mx-auto"></div>
+
+    <!-- Use Cases -->
+    <section id="usecases" class="py-20 sm:py-28">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+          <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-3">真实世界用例</h2>
+          <p class="text-slate-400">组合代理解决复杂场景</p>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <!-- Scenario 1 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-mono text-accent-light bg-accent/10 px-2 py-0.5 rounded">场景 01</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg text-white mb-5">构建 Startup MVP</h3>
+            <div class="space-y-3">
+              <div class="scenario-step"><p class="text-sm text-slate-300">🎨 <strong class="text-white">前端开发者</strong> — 构建 React 应用</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🏗️ <strong class="text-white">后端架构师</strong> — 设计 API 和数据库</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🚀 <strong class="text-white">增长黑客</strong> — 规划用户获取</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">⚡ <strong class="text-white">快速原型开发者</strong> — 快速迭代周期</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🔍 <strong class="text-white">现实检验者</strong> — 确保发布前质量</p></div>
+            </div>
+            <p class="text-xs text-emerald-400/80 mt-5 font-medium">→ 在每个阶段都有专业知识的支持，更快地发布</p>
+          </div>
+
+          <!-- Scenario 2 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-mono text-accent-light bg-accent/10 px-2 py-0.5 rounded">场景 02</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg text-white mb-5">营销活动启动</h3>
+            <div class="space-y-3">
+              <div class="scenario-step"><p class="text-sm text-slate-300">📝 <strong class="text-white">内容创作者</strong> — 开发活动内容</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🐦 <strong class="text-white">Twitter 互动者</strong> — Twitter 战略和执行</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">📸 <strong class="text-white">Instagram 策展人</strong> — 视觉内容和故事</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🤝 <strong class="text-white">Reddit 社区建设者</strong> — 真实的社区互动</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">📊 <strong class="text-white">分析报告者</strong> — 跟踪和优化绩效</p></div>
+            </div>
+            <p class="text-xs text-emerald-400/80 mt-5 font-medium">→ 具有平台特定专业知识的多渠道协调活动</p>
+          </div>
+
+          <!-- Scenario 3 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-mono text-accent-light bg-accent/10 px-2 py-0.5 rounded">场景 03</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg text-white mb-5">企业功能开发</h3>
+            <div class="space-y-3">
+              <div class="scenario-step"><p class="text-sm text-slate-300">👔 <strong class="text-white">高级项目经理</strong> — 范围和任务规划</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">💎 <strong class="text-white">高级开发者</strong> — 复杂实现</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🎨 <strong class="text-white">UI 设计师</strong> — 设计系统和组件</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🧪 <strong class="text-white">实验跟踪者</strong> — A/B 测试规划</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">📸 <strong class="text-white">证据收集者</strong> — 质量验证</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">🔍 <strong class="text-white">现实检验者</strong> — 生产就绪性</p></div>
+            </div>
+            <p class="text-xs text-emerald-400/80 mt-5 font-medium">→ 具有质量门和文档的企业级交付</p>
+          </div>
+
+          <!-- Scenario 4 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-2 mb-1">
+              <span class="text-xs font-mono text-accent-light bg-accent/10 px-2 py-0.5 rounded">场景 04</span>
+            </div>
+            <h3 class="font-display font-semibold text-lg text-white mb-5">完整机构产品发现</h3>
+            <div class="space-y-3">
+              <div class="scenario-step"><p class="text-sm text-slate-300">所有 <strong class="text-white">8 个部门</strong> 在单一任务上并行工作</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">产品趋势研究员、后端架构师、品牌守护者</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">增长黑客、支持响应者、UX 研究员</p></div>
+              <div class="scenario-step"><p class="text-sm text-slate-300">项目牧羊人、XR 界面架构师</p></div>
+            </div>
+            <p class="text-xs text-emerald-400/80 mt-5 font-medium">→ 在单次会话中产生的全面、跨职能产品蓝图</p>
+            <a href="https://github.com/msitarzewski/agency-agents/blob/main/examples/nexus-spatial-discovery.md" target="_blank"
+               class="inline-block mt-3 text-xs text-accent-light hover:text-white transition-colors">查看完整示例 →</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line-glow max-w-5xl mx-auto"></div>
+
+    <!-- Quick Start -->
+    <section id="quickstart" class="py-20 sm:py-28">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+          <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-3">快速开始</h2>
+          <p class="text-slate-400">三种方式立即使用 The Agency</p>
+        </div>
+
+        <div class="space-y-6">
+          <!-- Option 1 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/15 text-accent-light font-display font-bold text-sm">1</span>
+              <h3 class="font-display font-semibold text-white">与 Claude Code 配合使用<span class="text-xs font-normal text-emerald-400 ml-2">推荐</span></h3>
+            </div>
+            <pre class="bg-surface-950 rounded-lg p-4 text-sm font-mono text-slate-300 overflow-x-auto border border-white/5"><code><span class="text-slate-500"># 将代理复制到您的 Claude Code 目录</span>
+cp -r agency-agents/* ~/.claude/agents/
+
+<span class="text-slate-500"># 现在在您的 Claude Code 会话中激活任何代理:</span>
+<span class="text-emerald-400">"Hey Claude, activate Frontend Developer mode"</span></code></pre>
+          </div>
+
+          <!-- Option 2 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/15 text-accent-light font-display font-bold text-sm">2</span>
+              <h3 class="font-display font-semibold text-white">作为参考使用</h3>
+            </div>
+            <p class="text-sm text-slate-400 leading-relaxed">每个代理文件包含身份和个性特征、核心使命和工作流程、包含代码示例的技术交付成果、成功指标和沟通风格。浏览代理并复制/改编您需要的！</p>
+          </div>
+
+          <!-- Option 3 -->
+          <div class="glass-card rounded-2xl p-6 sm:p-8">
+            <div class="flex items-center gap-3 mb-4">
+              <span class="flex items-center justify-center w-8 h-8 rounded-lg bg-accent/15 text-accent-light font-display font-bold text-sm">3</span>
+              <h3 class="font-display font-semibold text-white">与其他工具配合使用</h3>
+            </div>
+            <pre class="bg-surface-950 rounded-lg p-4 text-sm font-mono text-slate-300 overflow-x-auto border border-white/5"><code><span class="text-slate-500"># 步骤 1 -- 为所有支持的工具生成集成文件</span>
+./scripts/convert.sh
+
+<span class="text-slate-500"># 步骤 2 -- 交互式安装</span>
+./scripts/install.sh
+
+<span class="text-slate-500"># 或直接针对特定工具</span>
+./scripts/install.sh --tool cursor</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line-glow max-w-5xl mx-auto"></div>
+
+    <!-- Integrations -->
+    <section id="integrations" class="py-20 sm:py-28">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-14">
+          <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-3">多工具集成</h2>
+          <p class="text-slate-400">支持主流 AI 编码工具</p>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Claude Code</p>
+            <p class="text-xs text-slate-500">直接复制，无需转换</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Cursor</p>
+            <p class="text-xs text-slate-500">.mdc 规则文件</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Aider</p>
+            <p class="text-xs text-slate-500">CONVENTIONS.md</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Windsurf</p>
+            <p class="text-xs text-slate-500">.windsurfrules</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Gemini CLI</p>
+            <p class="text-xs text-slate-500">扩展技能</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">OpenCode</p>
+            <p class="text-xs text-slate-500">.opencode/agent/</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center">
+            <p class="font-display font-semibold text-white mb-1">Antigravity</p>
+            <p class="text-xs text-slate-500">Gemini 技能</p>
+          </div>
+          <div class="glass-card rounded-xl p-5 text-center group cursor-pointer" onclick="window.open('https://github.com/msitarzewski/agency-agents','_blank')">
+            <p class="font-display font-semibold text-slate-400 group-hover:text-white transition-colors mb-1">更多即将到来</p>
+            <p class="text-xs text-slate-600">贡献您的集成</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="line-glow max-w-5xl mx-auto"></div>
+
+    <!-- CTA -->
+    <section class="py-20 sm:py-28">
+      <div class="max-w-3xl mx-auto px-4 sm:px-6 text-center">
+        <h2 class="font-display font-bold text-3xl sm:text-4xl text-white mb-4">
+          您的 AI 梦之队正在等待
+        </h2>
+        <p class="text-slate-400 mb-8 max-w-lg mx-auto">
+          诞生于 Reddit 社区的讨论，经过数月迭代，61+ 专业代理随时为您服务。开源、免费、生产就绪。
+        </p>
+        <div class="flex flex-wrap items-center justify-center gap-4">
+          <a href="https://github.com/msitarzewski/agency-agents" target="_blank"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-white text-surface-900 font-medium hover:bg-slate-100 transition-all">
+            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+            ⭐ Star on GitHub
+          </a>
+          <a href="https://github.com/msitarzewski/agency-agents/fork" target="_blank"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-white/10 text-slate-300 hover:text-white hover:border-accent/30 transition-all">
+            🍴 Fork 项目
+          </a>
+          <a href="https://github.com/sponsors/msitarzewski" target="_blank"
+             class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-rose-500/20 text-rose-400 hover:bg-rose-500/10 transition-all">
+            ❤️ 赞助
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/5 py-10">
+      <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-2 text-sm text-slate-500">
+            <span class="text-lg">🎭</span>
+            <span>The Agency</span>
+            <span class="mx-1">·</span>
+            <span>MIT License</span>
+          </div>
+          <div class="flex items-center gap-6 text-sm text-slate-500">
+            <a href="https://github.com/msitarzewski/agency-agents/discussions" target="_blank" class="hover:text-white transition-colors">讨论</a>
+            <a href="https://github.com/msitarzewski/agency-agents/issues" target="_blank" class="hover:text-white transition-colors">反馈</a>
+            <a href="https://github.com/jnMetaCode/agency-agents-zh" target="_blank" class="hover:text-white transition-colors">中文翻译</a>
+          </div>
+        </div>
+        <p class="text-center text-xs text-slate-600 mt-6">由社区用 ❤️ 制作，为社区服务</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <script>
+    // Department filter
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const deptSections = document.querySelectorAll('.dept-section');
+
+    filterBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const dept = btn.dataset.dept;
+        deptSections.forEach(s => {
+          if (dept === 'all' || s.dataset.dept === dept) {
+            s.style.display = '';
+          } else {
+            s.style.display = 'none';
+          }
+        });
+      });
+    });
+
+    // Smooth scroll for anchor links
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', e => {
+        e.preventDefault();
+        const el = document.querySelector(a.getAttribute('href'));
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Close mobile menu
+          document.getElementById('mobileMenu').classList.add('hidden');
+        }
+      });
+    });
+
+    // Intersection Observer for fade-in animations on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = '1';
+          entry.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.dept-section').forEach(section => {
+      section.style.opacity = '0';
+      section.style.transform = 'translateY(20px)';
+      section.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+      observer.observe(section);
+    });
+  </script>
+</body>
+</html>
